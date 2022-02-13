@@ -1,0 +1,79 @@
+// Add shadow plugin
+//plugins {
+//    id 'com.github.johnrengelman.shadow' version '6.1.0'
+//}
+
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+
+def ENV = System.getenv()
+
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = 8
+
+version = "${version}-build.${ENV.GITHUB_RUN_NUMBER ?: 9999}"
+group = project.maven_group
+archivesBaseName = project.archives_base_name
+
+//configurations {
+//    shade
+//    compile.extendsFrom shade
+//}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.xerial:sqlite-jdbc:3.21.0.1'
+    implementation 'mysql:mysql-connector-java:8.0.13'
+    implementation 'org.postgresql:postgresql:42.2.23.jre7'
+
+    // Logging
+    implementation 'org.apache.logging.log4j:log4j-core:2.17.1'
+    implementation 'org.apache.logging.log4j:log4j-api:2.17.1'
+}
+
+//// START: SHADING DEPENDENCIES
+//shadowJar {
+//    configurations = [project.configurations.shade]
+//}
+//
+//artifacts {
+//    archives shadowJar
+//    shadow shadowJar
+//}
+//// END: SHADING DEPENDENCIES
+
+jar {
+    manifest {
+        attributes([
+                "Specification-Title": project.archives_base_name,
+                "Specification-Vendor": "twpi",
+                "Specification-Version": "1",
+                "Implementation-Title": project.archives_base_name,
+                "Implementation-Version": project.version,
+                "Implementation-Vendor" :"twpi",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifactId = project.archives_base_name
+            from components.java
+        }
+    }
+	repositories {
+        if(ENV.MAVEN_SECRET) {
+            maven {
+                url "https://maven.rmnad.net/minecraft"
+                credentials {
+                    username = "github"
+                    password = "${ENV.MAVEN_SECRET}"
+                }
+            }
+        }
+	}
+}
