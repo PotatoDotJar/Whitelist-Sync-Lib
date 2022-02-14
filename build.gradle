@@ -19,22 +19,8 @@ dependencies {
     implementation 'org.postgresql:postgresql:42.2.23.jre7'
 
     // Logging
-    implementation 'org.apache.logging.log4j:log4j-core:2.17.1'
-    implementation 'org.apache.logging.log4j:log4j-api:2.17.1'
-}
-
-jar {
-    manifest {
-        attributes([
-                "Specification-Title": project.archives_base_name,
-                "Specification-Vendor": "twpi",
-                "Specification-Version": "1",
-                "Implementation-Title": project.archives_base_name,
-                "Implementation-Version": project.version,
-                "Implementation-Vendor" :"twpi",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
-        ])
-    }
+    compileOnly 'org.apache.logging.log4j:log4j-core:2.17.1'
+    compileOnly 'org.apache.logging.log4j:log4j-api:2.17.1'
 }
 
 publishing {
