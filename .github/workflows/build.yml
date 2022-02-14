@@ -3,7 +3,6 @@ name: Java CI
 on:
   push:
     branches:
-      # main and dev versions for each mc ver here
       - "master"
 jobs:
   build:
@@ -12,8 +11,6 @@ jobs:
       !contains(github.event.head_commit.message, '[ci skip]')
     steps:
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 30 # Gets the last 30 commits so the changelog might work
       - name: Set up JDK 17
         uses: actions/setup-java@v2
         with:
@@ -24,7 +21,7 @@ jobs:
       - name: Build and Publish with Gradle
         uses: gradle/gradle-build-action@v2
         env:
-          MAVEN_SECRET: ${{ secrets.MAVEN_SECRET }}
+          MAVEN_REPO_USER: ${{ secrets.MAVEN_REPO_USER }}
+          MAVEN_REPO_SECRET: ${{ secrets.MAVEN_REPO_SECRET }}
         with:
           arguments: build publish --stacktrace --no-daemon
-          #build-root-directory: GradleTest1
