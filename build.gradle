@@ -45,8 +45,8 @@ publishing {
             maven {
                 url "https://maven.rmnad.net/snapshots"
                 credentials {
-                    username = MAVEN_REPO_USER
-                    password = MAVEN_REPO_SECRET
+                    username = "${ENV.MAVEN_REPO_USER}"
+                    password = "${ENV.MAVEN_REPO_SECRET}"
                 }
             }
         }
