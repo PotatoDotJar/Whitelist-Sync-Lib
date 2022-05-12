@@ -40,8 +40,8 @@ public class SqLiteService implements BaseService {
         boolean isSuccess = true;
 
         try {
-            Class.forName("org.sqlite.JDBC").getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
             WhitelistSyncLib.LOGGER.error("Failed to init sqlite connector. Is the library missing?");
             WhitelistSyncLib.LOGGER.error(e.getMessage(), e);
             isSuccess = false;
@@ -131,6 +131,7 @@ public class SqLiteService implements BaseService {
 
             WhitelistSyncLib.LOGGER.debug("Database pulled whitelisted players | Took " + timeTaken + "ms | Read " + records + " records.");
 
+            rs.close();
             stmt.close();
             conn.close();
         } catch (SQLException e) {
@@ -170,6 +171,7 @@ public class SqLiteService implements BaseService {
 
                 WhitelistSyncLib.LOGGER.debug("Database pulled opped players | Took " + timeTaken + "ms | Read " + records + " records.");
 
+                rs.close();
                 stmt.close();
                 conn.close();
             } catch (SQLException e) {
@@ -302,6 +304,7 @@ public class SqLiteService implements BaseService {
             long timeTaken = System.currentTimeMillis() - startTime;
             WhitelistSyncLib.LOGGER.debug("Copied whitelist database to local | Took " + timeTaken + "ms | Wrote " + records + " records.");
 
+            rs.close();
             stmt.close();
             conn.close();
             return true;
@@ -356,6 +359,7 @@ public class SqLiteService implements BaseService {
                 long timeTaken = System.currentTimeMillis() - startTime;
                 WhitelistSyncLib.LOGGER.debug("Copied op database to local | Took " + timeTaken + "ms | Wrote " + records + " records.");
 
+                rs.close();
                 stmt.close();
                 conn.close();
                 return true;
@@ -389,6 +393,7 @@ public class SqLiteService implements BaseService {
             // Time taken.
             long timeTaken = System.currentTimeMillis() - startTime;
             WhitelistSyncLib.LOGGER.debug("Added " + name + " to whitelist | Took " + timeTaken + "ms");
+
             stmt.close();
             conn.close();
             return true;
@@ -419,6 +424,7 @@ public class SqLiteService implements BaseService {
                 // Time taken.
                 long timeTaken = System.currentTimeMillis() - startTime;
                 WhitelistSyncLib.LOGGER.debug("Database opped " + name + " | Took " + timeTaken + "ms");
+
                 stmt.close();
                 conn.close();
                 return true;
@@ -452,6 +458,7 @@ public class SqLiteService implements BaseService {
             // Time taken.
             long timeTaken = System.currentTimeMillis() - startTime;
             WhitelistSyncLib.LOGGER.debug("Removed " + name + " from whitelist | Took " + timeTaken + "ms");
+
             stmt.close();
             conn.close();
             return true;
@@ -482,6 +489,7 @@ public class SqLiteService implements BaseService {
                 // Time taken
                 long timeTaken = System.currentTimeMillis() - startTime;
                 WhitelistSyncLib.LOGGER.debug("Deopped " + name + " | Took " + timeTaken + "ms");
+
                 stmt.close();
                 conn.close();
                 return true;
