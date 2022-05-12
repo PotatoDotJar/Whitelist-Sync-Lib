@@ -16,7 +16,7 @@ repositories {
 dependencies {
     implementation 'org.xerial:sqlite-jdbc:3.21.0.1'
     implementation 'mysql:mysql-connector-java:8.0.13'
-    implementation 'org.postgresql:postgresql:42.2.23.jre7'
+    //implementation 'org.postgresql:postgresql:42.2.23.jre7'
 
     // Logging
     compileOnly 'org.apache.logging.log4j:log4j-core:2.17.1'
